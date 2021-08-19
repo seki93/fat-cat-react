@@ -7,17 +7,20 @@ const ReportsList = props => {
     axios.get('/api/v1/time_tracks/report', 
               { params: { user_id: 1, report_type: 'weekly'} }
       )
-        .then(res => setJobs(res.data))
+        .then(res => setReports(res.data))
       }, []);
 
-  const [jobs, setJobs] = useState([]);
+  const [reports, setReports] = useState([]);
   let totalTime = 0;
 
-  jobs.map(job =>{
-    totalTime += job.total;
+  reports.map(report =>{
+    totalTime += report.total;
   })
 
-  
+  let totalHours = totalTime / 60;
+  let totalMinutes = totalTime % 60;
+
+
   return (
     <table>
       <thead>
@@ -28,18 +31,18 @@ const ReportsList = props => {
         </tr>
       </thead>
       <tbody>
-        {jobs.map((job, index) => (
+        {reports.map((report, index) => (
           <tr>
-            <td id={job.id}>{job.start_time}</td>
-            <td>{job.end_time}</td>
-            <td>{job.total}</td>
+            <td id={report.id}>{report.start_time}</td>
+            <td>{report.end_time}</td>
+            <td>{report.total}</td>
           </tr>
         ))}
       </tbody>
       <tfoot>
         <tr>
           <td>total time</td>
-          <td>{totalTime}</td>
+          <td>{totalHours}h and {totalMinutes}min</td>
         </tr>
       </tfoot>
     </table>
